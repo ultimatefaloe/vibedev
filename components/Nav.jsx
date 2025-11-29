@@ -29,7 +29,7 @@ const Nav = () => {
           width={30}
           height={30}
         />
-        <p className="logo_text">Vibe Dev</p>
+        <p className="logo_text blue_gradient">Vibe Dev</p>
       </Link>
 
       {/* Desktop Navigation */}

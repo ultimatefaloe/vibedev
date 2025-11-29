@@ -1,7 +1,9 @@
 import Nav from "@components/Nav";
 import Provider from "@components/Provider";
+import Image from "next/image";
 import "@styles/global.css";
 import { Inter } from "next/font/google";
+import { Suspense } from "react";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -18,7 +20,6 @@ export const metadata = {
   },
 };
 
-
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
@@ -29,7 +30,7 @@ export default function RootLayout({ children }) {
           </div>
           <main className="app">
             <Nav />
-            {children}
+            <Suspense fallback={<div className="flex-center"><Image src={'./assets/icons/loader.svg'} alt="loading..." width={100} height={100}/></div>}>{children}</Suspense>;
           </main>
         </Provider>
       </body>
