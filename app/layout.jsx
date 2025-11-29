@@ -11,7 +11,13 @@ const inter = Inter({
 export const metadata = {
   title: "Vibe Dev",
   description: "Share and discover AI prompts",
+  icons: {
+    icon: "/assets/images/favicon.png",
+    shortcut: "/assets/images/favicon.png",
+    apple: "/assets/images/favicon.png",
+  },
 };
+
 
 export default function RootLayout({ children }) {
   return (
