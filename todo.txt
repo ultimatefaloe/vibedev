@@ -1,0 +1,14 @@
+2
+implement search
+-tag
+-prompt
+-username
+
+feed
+
+create filter() takes in search value
+handlesearch change - search value, debounce for searchTimeout - 
+handle tagclick (tagname) - filter()
+
+3
+implement click on tag
