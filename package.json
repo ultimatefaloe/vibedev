@@ -12,7 +12,7 @@
     "bcrypt": "^6.0.0",
     "mongo": "^0.1.0",
     "mongodb": "^7.0.0",
-    "mongoose": "^9.0.0",
+    "mongoose": "9.0.1",
     "next": "16.0.5",
     "next-auth": "^4.24.13",
     "react": "19.2.0",
@@ -20,7 +20,7 @@
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
-    "baseline-browser-mapping": "^2.8.32",
+    "baseline-browser-mapping": "^2.9.14",
     "tailwindcss": "^4"
   }
 }
