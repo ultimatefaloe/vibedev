@@ -30,7 +30,20 @@ export default function RootLayout({ children }) {
           </div>
           <main className="app">
             <Nav />
-            <Suspense fallback={<div className="flex-center"><Image src={'./assets/icons/loader.svg'} alt="loading..." width={100} height={100}/></div>}>{children}</Suspense>;
+            <Suspense
+              fallback={
+                <div className="flex-center">
+                  <Image
+                    src={"./assets/icons/loader.svg"}
+                    alt="loading..."
+                    width={100}
+                    height={100}
+                  />
+                </div>
+              }
+            >
+              {children}
+            </Suspense>
           </main>
         </Provider>
       </body>
