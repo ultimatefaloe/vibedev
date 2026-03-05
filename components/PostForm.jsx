@@ -88,7 +88,7 @@ export default function PostForm({
       const created = await res.json();
       router.push(`/post/${created._id}`);
     } catch (err) {
-      toast.error(err.message);
+      console.log(err);
       setError(err.message);
     } finally {
       setInternalSubmitting(false);

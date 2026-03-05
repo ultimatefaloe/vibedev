@@ -61,7 +61,7 @@ export async function PATCH(request, { params }) {
     const { title, content, category } = await request.json();
 
     const updated = await Post.findByIdAndUpdate(
-      params.id,
+      id,
       { title, content, category },
       { new: true, runValidators: true }
     );

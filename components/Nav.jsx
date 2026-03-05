@@ -66,7 +66,7 @@ export default function Nav() {
               </Link>
               <button
                 onClick={() => signOut()}
-                className="ml-1 px-3 py-1.5 text-sm text-[#aaa] hover:text-white rounded-md hover:bg-white/[0.06] transition-colors"
+                className="ml-1 px-3 py-1.5 text-sm text-[#aaa] hover:text-white rounded-md hover:bg-white/[0.06] transition-colors cursor-pointer"
               >
                 Sign out
               </button>
@@ -74,7 +74,7 @@ export default function Nav() {
           ) : (
             <button
               onClick={() => signIn("google")}
-              className="ml-1 px-4 py-1.5 text-sm font-medium text-white bg-[#7c6af7] hover:bg-[#6a59e0] rounded-md transition-colors"
+              className="ml-1 px-4 py-1.5 text-sm font-medium text-white bg-[#7c6af7] hover:bg-[#6a59e0] rounded-md transition-colors cursor-pointer"
             >
               Sign in
             </button>
@@ -83,7 +83,7 @@ export default function Nav() {
 
         {/* Mobile menu button */}
         <button
-          className="sm:hidden p-2 text-[#aaa] hover:text-white"
+          className="sm:hidden p-2 text-[#aaa] hover:text-white cursor-pointer"
           onClick={() => setMenuOpen(!menuOpen)}
           aria-label="Toggle menu"
         >
@@ -136,7 +136,7 @@ export default function Nav() {
                   signOut();
                   setMenuOpen(false);
                 }}
-                className="text-left text-sm text-[#aaa] hover:text-white py-1"
+                className="text-left text-sm text-[#aaa] hover:text-white py-1 cursor-pointer"
               >
                 Sign out
               </button>
@@ -147,7 +147,7 @@ export default function Nav() {
                 signIn("google");
                 setMenuOpen(false);
               }}
-              className="text-left text-sm text-[#7c6af7] font-medium py-1"
+              className="text-left text-sm text-[#7c6af7] font-medium py-1 cursor-pointer"
             >
               Sign in
             </button>
