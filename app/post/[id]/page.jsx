@@ -26,7 +26,7 @@ async function getPost(id) {
 }
 
 export async function generateMetadata({ params }) {
-  const id = (await params).id;
+  const { id } = await params;
 
   const post = await getPost(id);
   if (!post) return { title: "Post not found" };
@@ -37,7 +37,7 @@ export async function generateMetadata({ params }) {
 }
 
 export default async function PostPage({ params }) {
-  const id = (await params).id;
+  const { id } = await params;
   const post = await getPost(id);
 
   if (!post) notFound();

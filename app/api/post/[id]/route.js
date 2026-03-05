@@ -8,7 +8,7 @@ import User from "@models/User";
 // GET /api/post/[id]
 export async function GET(request, { params }) {
   try {
-    const id = (await params).id;
+    const { id } = await params;
 
     await connectDB();
 
@@ -49,7 +49,7 @@ async function authorizeOwner(request, postId) {
 // PATCH /api/post/[id]
 export async function PATCH(request, { params }) {
   try {
-    const id = (await params).id;
+    const { id } = await params;
 
     await connectDB();
 
@@ -76,7 +76,7 @@ export async function PATCH(request, { params }) {
 // DELETE /api/post/[id]  — soft delete: sets deletedAt timestamp
 export async function DELETE(request, { params }) {
   try {
-    const id = (await params).id;
+    const { id } = await params;
 
     await connectDB();
 
