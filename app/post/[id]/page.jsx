@@ -27,8 +27,9 @@ async function getPost(id) {
 
 export async function generateMetadata({ params }) {
   const { id } = await params;
-
+  console.log("Generating metadata for post ID:", id);
   const post = await getPost(id);
+  console.log("Generating metadata for post:", post);
   if (!post) return { title: "Post not found" };
   return {
     title: post.title || `${post.category} prompt | VibeDev`,
@@ -38,7 +39,10 @@ export async function generateMetadata({ params }) {
 
 export default async function PostPage({ params }) {
   const { id } = await params;
+  console.log("Generating metadata for post ID:", id);
+
   const post = await getPost(id);
+  console.log("Generating metadata for post:", post);
 
   if (!post) notFound();
 
