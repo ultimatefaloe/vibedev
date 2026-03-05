@@ -8,9 +8,11 @@ import User from "@models/User";
 // GET /api/post/[id]
 export async function GET(request, { params }) {
   try {
+    const id = (await params).id;
+
     await connectDB();
 
-    const post = await Post.findOne({ _id: params.id, deletedAt: null })
+    const post = await Post.findOne({ _id: id, deletedAt: null })
       .populate("creator", "username image email")
       .lean();
 
@@ -47,9 +49,11 @@ async function authorizeOwner(request, postId) {
 // PATCH /api/post/[id]
 export async function PATCH(request, { params }) {
   try {
+    const id = (await params).id;
+
     await connectDB();
 
-    const auth = await authorizeOwner(request, params.id);
+    const auth = await authorizeOwner(request, id);
     if (auth.error) {
       return NextResponse.json({ error: auth.error }, { status: auth.status });
     }
@@ -72,14 +76,16 @@ export async function PATCH(request, { params }) {
 // DELETE /api/post/[id]  — soft delete: sets deletedAt timestamp
 export async function DELETE(request, { params }) {
   try {
+    const id = (await params).id;
+
     await connectDB();
 
-    const auth = await authorizeOwner(request, params.id);
+    const auth = await authorizeOwner(request, id);
     if (auth.error) {
       return NextResponse.json({ error: auth.error }, { status: auth.status });
     }
 
-    await Post.findByIdAndUpdate(params.id, { deletedAt: new Date() });
+    await Post.findByIdAndUpdate(id, { deletedAt: new Date() });
 
     return NextResponse.json({ message: "Post deleted" }, { status: 200 });
   } catch (error) {

@@ -4,7 +4,7 @@ import Nav from "@components/Nav";
 import { ToastContainer } from "react-toastify";
 
 export const metadata = {
-  title: "VibeDev — Share AI Prompts",
+  title: "VibeDev | Share AI Prompts",
   description:
     "A community platform for developers to share and discover AI prompts for better vibe coding.",
   icons: {

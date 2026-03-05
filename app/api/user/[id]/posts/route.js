@@ -5,9 +5,10 @@ import Post from "@models/Post";
 // GET /api/user/[id]/posts
 export async function GET(request, { params }) {
   try {
+    const creatorId = (await params).id;
+    
     await connectDB();
-
-    const posts = await Post.find({ creator: params.id, deletedAt: null })
+    const posts = await Post.find({ creator: creatorId, deletedAt: null })
       .populate("creator", "username image email")
       .sort({ createdAt: -1 })
       .lean();
