@@ -6,6 +6,7 @@ import CopyButton from "@components/CopyButton";
 import mongoose from "mongoose";
 
 export const dynamic = "force-dynamic";
+export const fetchCache = "force-no-store";
 
 const CATEGORY_COLORS = {
   education: "bg-blue-500/10 text-blue-400 border-blue-500/20",
@@ -30,7 +31,7 @@ async function getPost(id) {
 }
 
 export async function generateMetadata({ params }) {
-  const { id } = await params;
+  const id = (await params).id;
 
   console.log("Metadata ID:", id);
 
@@ -45,7 +46,8 @@ export async function generateMetadata({ params }) {
 }
 
 export default async function PostPage({ params }) {
-  const { id } = await params;
+  const id = (await params).id;
+
   console.log("Generating metadata for post ID:", id);
 
   const post = await getPost(id);
