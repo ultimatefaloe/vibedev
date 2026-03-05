@@ -4,11 +4,38 @@ import { authOptions } from "@app/api/auth/[...nextauth]/route";
 import connectDB from "@utils/database";
 import Post from "@models/Post";
 import User from "@models/User";
+import mongoose from "mongoose";
+
+/** Safely serialize a lean Mongoose document for JSON responses.
+ *  lean() returns plain JS objects but ObjectId and Date instances still need
+ *  toString() / toISOString() — NextResponse.json() calls JSON.stringify which
+ *  handles Dates fine, but ObjectIds render as {} without this step. */
+function serializePost(post) {
+  if (!post) return null;
+  return {
+    ...post,
+    _id:       post._id.toString(),
+    createdAt: post.createdAt?.toISOString?.() ?? post.createdAt,
+    updatedAt: post.updatedAt?.toISOString?.() ?? post.updatedAt,
+    deletedAt: post.deletedAt?.toISOString?.() ?? post.deletedAt,
+    creator: post.creator
+      ? {
+          ...post.creator,
+          _id: post.creator._id?.toString?.() ?? post.creator._id,
+        }
+      : null,
+  };
+}
 
 // GET /api/post/[id]
 export async function GET(request, { params }) {
   try {
     const { id } = await params;
+
+    // Guard: reject malformed IDs immediately — avoids a CastError in Mongoose
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return NextResponse.json({ error: "Invalid post ID" }, { status: 400 });
+    }
 
     await connectDB();
 
@@ -20,7 +47,7 @@ export async function GET(request, { params }) {
       return NextResponse.json({ error: "Post not found" }, { status: 404 });
     }
 
-    return NextResponse.json(post, { status: 200 });
+    return NextResponse.json(serializePost(post), { status: 200 });
   } catch (error) {
     console.error("[GET /api/post/[id]]", error);
     return NextResponse.json({ error: "Failed to fetch post" }, { status: 500 });
@@ -28,7 +55,7 @@ export async function GET(request, { params }) {
 }
 
 // Helper: resolve session user and verify they own the post
-async function authorizeOwner(request, postId) {
+async function authorizeOwner(postId) {
   const session = await getServerSession(authOptions);
   if (!session?.user?.email) return { error: "Unauthorized", status: 401 };
 
@@ -38,7 +65,6 @@ async function authorizeOwner(request, postId) {
   const post = await Post.findOne({ _id: postId, deletedAt: null }).lean();
   if (!post) return { error: "Post not found", status: 404 };
 
-  // Only the creator may mutate the post
   if (!post.creator || post.creator.toString() !== user._id.toString()) {
     return { error: "Forbidden", status: 403 };
   }
@@ -51,9 +77,13 @@ export async function PATCH(request, { params }) {
   try {
     const { id } = await params;
 
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return NextResponse.json({ error: "Invalid post ID" }, { status: 400 });
+    }
+
     await connectDB();
 
-    const auth = await authorizeOwner(request, id);
+    const auth = await authorizeOwner(id);
     if (auth.error) {
       return NextResponse.json({ error: auth.error }, { status: auth.status });
     }
@@ -64,23 +94,27 @@ export async function PATCH(request, { params }) {
       id,
       { title, content, category },
       { new: true, runValidators: true }
-    );
+    ).lean();
 
-    return NextResponse.json(updated, { status: 200 });
+    return NextResponse.json(serializePost(updated), { status: 200 });
   } catch (error) {
     console.error("[PATCH /api/post/[id]]", error);
     return NextResponse.json({ error: "Failed to update post" }, { status: 500 });
   }
 }
 
-// DELETE /api/post/[id]  — soft delete: sets deletedAt timestamp
+// DELETE /api/post/[id] — soft delete
 export async function DELETE(request, { params }) {
   try {
     const { id } = await params;
 
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return NextResponse.json({ error: "Invalid post ID" }, { status: 400 });
+    }
+
     await connectDB();
 
-    const auth = await authorizeOwner(request, id);
+    const auth = await authorizeOwner(id);
     if (auth.error) {
       return NextResponse.json({ error: auth.error }, { status: auth.status });
     }
