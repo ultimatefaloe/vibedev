@@ -1,21 +1,19 @@
 import Feed from "@components/Feed";
 
-const Home = () => {
-  return (
-    <section className="w-full flex-center flex-col">
-      <h1 className="head_text text-center">
-        Share & Discover
-        <br className="" />
-        <span className="blue_gradient">AI Prompt</span>
-      </h1>
-      <p className="desc text-center">
-        Vibe Dev is an open-source AI prompting tool for mordern world to discover, create, and share creative propmts
-      </p>
+export const dynamic = "force-dynamic";
 
-      {/* Feed */}
+export default function Home() {
+  return (
+    <section>
+      <div className="mb-10">
+        <h1 className="text-3xl font-bold tracking-tight text-white mb-2">
+          VibeDev
+        </h1>
+        <p className="text-[#888] text-sm">
+          Discover and share AI prompts that make vibe coding better.
+        </p>
+      </div>
       <Feed />
     </section>
   );
-};
-
-export default Home;
+}

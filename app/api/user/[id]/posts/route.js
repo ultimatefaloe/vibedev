@@ -1,17 +1,20 @@
-import Prompt from "@models/Prompt";
-import { connectionToDB } from "@utils/database";
+import { NextResponse } from "next/server";
+import connectDB from "@utils/database";
+import Post from "@models/Post";
 
-export const GET = async (req, { params }) => {
+// GET /api/user/[id]/posts
+export async function GET(request, { params }) {
   try {
-    await connectionToDB();
+    await connectDB();
 
-    const userId = params.id;
+    const posts = await Post.find({ creator: params.id, deletedAt: null })
+      .populate("creator", "username image email")
+      .sort({ createdAt: -1 })
+      .lean();
 
-    const prompts = await Prompt.find({ createor: userId }).populate("creator");
-
-    return new Response(JSON.stringify(prompts), { status: 200 });
+    return NextResponse.json(posts, { status: 200 });
   } catch (error) {
-    console.error(error);
-    return new Response("Failed to fetch posts", { status: 500 });
+    console.error("[GET /api/user/[id]/posts]", error);
+    return NextResponse.json({ error: "Failed to fetch user posts" }, { status: 500 });
   }
-};
+}

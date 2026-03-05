@@ -1,50 +1,37 @@
-import Nav from "@components/Nav";
+import "../styles/global.css";
 import Provider from "@components/Provider";
-import Image from "next/image";
-import "@styles/global.css";
-import { Inter } from "next/font/google";
-import { Suspense } from "react";
-
-const inter = Inter({
-  subsets: ["latin"],
-  weight: ["400", "600", "700"],
-});
+import Nav from "@components/Nav";
+import { ToastContainer } from "react-toastify";
 
 export const metadata = {
-  title: "Vibe Dev",
-  description: "Share and discover AI prompts",
+  title: "VibeDev — Share AI Prompts",
+  description:
+    "A community platform for developers to share and discover AI prompts for better vibe coding.",
   icons: {
-    icon: "/assets/images/favicon.png",
-    shortcut: "/assets/images/favicon.png",
-    apple: "/assets/images/favicon.png",
+    icon: "/favicon.ico",
   },
 };
 
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body className={inter.className}>
+      <body className="bg-[#0e0e10] text-[#e8e8e8] min-h-screen antialiased">
+        <ToastContainer
+          position="top-center"
+          autoClose={5000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick={false}
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="light"
+          // transition={Bounce}
+        />
         <Provider>
-          <div className="main">
-            <div className="gradient" />
-          </div>
-          <main className="app">
-            <Nav />
-            <Suspense
-              fallback={
-                <div className="flex-center">
-                  <Image
-                    src={"./assets/icons/loader.svg"}
-                    alt="loading..."
-                    width={100}
-                    height={100}
-                  />
-                </div>
-              }
-            >
-              {children}
-            </Suspense>
-          </main>
+          <Nav />
+          <main className="max-w-5xl mx-auto px-4 pt-20 pb-16">{children}</main>
         </Provider>
       </body>
     </html>

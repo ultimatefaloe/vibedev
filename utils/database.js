@@ -1,24 +1,48 @@
 import mongoose from "mongoose";
 
-let isConnected  = false;
+const MONGODB_URI = process.env.MONGODB_URI;
 
-export const connectionToDB = async()=>{
-   
-  if(isConnected){
-    console.log('DB connected')
-    return
+if (!MONGODB_URI) {
+  throw new Error("Please define the MONGODB_URI environment variable in .env.local");
+}
+
+/**
+ * Global cache to prevent multiple connections during hot reload in dev
+ * and across serverless function invocations in production (Vercel).
+ */
+let cached = global.mongoose;
+
+if (!cached) {
+  cached = global.mongoose = { conn: null, promise: null };
+}
+
+async function connectDB() {
+  if (cached.conn) {
+    return cached.conn;
+  }
+
+  if (!cached.promise) {
+    const opts = {
+      bufferCommands: false,
+      maxPoolSize: 10,
+      serverSelectionTimeoutMS: 5000,
+      socketTimeoutMS: 45000,
+    };
+
+    cached.promise = mongoose.connect(MONGODB_URI, opts).then((mongoose) => {
+      console.log("MongoDB connected");
+      return mongoose;
+    });
   }
 
   try {
-    await mongoose.connect( process.env.MONGODB_URI, {
-      dbName: 'sharedPrompt',
-    })
-
-    isConnected = true;
-
-    console.log('DB connected')
-  } catch (error) {
-    console.error(error)
-    return Response.json({ error: "Failed to create prompt" }, { status: 500 });
+    cached.conn = await cached.promise;
+  } catch (e) {
+    cached.promise = null;
+    throw e;
   }
+
+  return cached.conn;
 }
+
+export default connectDB;
