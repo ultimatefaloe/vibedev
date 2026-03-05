@@ -26,7 +26,9 @@ async function getPost(id) {
 }
 
 export async function generateMetadata({ params }) {
-  const post = await getPost(params.id);
+  const id = (await params).id;
+
+  const post = await getPost(id);
   if (!post) return { title: "Post not found" };
   return {
     title: post.title || `${post.category} prompt | VibeDev`,

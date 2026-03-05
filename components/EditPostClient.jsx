@@ -26,7 +26,6 @@ export default function EditPostClient() {
       return;
     }
 
-    console.log("Fetching post data for ID:", postId);
     const fetchPost = async () => {
       try {
         const res = await fetch(`/api/post/${postId}`);
@@ -75,7 +74,7 @@ export default function EditPostClient() {
       toast.success("Post updated successfully!");
       router.push(`/post/${postId}`);
     } catch (err) {
-      toast.error(err.message);
+      console.log(err);
       setError(err.message);
     } finally {
       setSubmitting(false);
