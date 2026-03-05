@@ -6,6 +6,8 @@ import Post from "@models/Post";
 import User from "@models/User";
 import mongoose from "mongoose";
 
+export const dynamic = "force-dynamic";
+
 /** Safely serialize a lean Mongoose document for JSON responses.
  *  lean() returns plain JS objects but ObjectId and Date instances still need
  *  toString() / toISOString() — NextResponse.json() calls JSON.stringify which

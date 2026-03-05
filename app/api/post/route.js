@@ -2,6 +2,8 @@ import { NextResponse } from "next/server";
 import connectDB from "@utils/database";
 import Post from "@models/Post";
 
+export const dynamic = "force-dynamic";
+
 const PAGE_SIZE = 20;
 
 /**

@@ -5,6 +5,8 @@ import connectDB from "@utils/database";
 import Post from "@models/Post";
 import User from "@models/User";
 
+export const dynamic = "force-dynamic";
+
 // POST /api/post/new
 export async function POST(request) {
   try {
