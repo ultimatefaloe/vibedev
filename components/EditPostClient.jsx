@@ -26,6 +26,7 @@ export default function EditPostClient() {
       return;
     }
 
+    console.log("Fetching post data for ID:", postId);
     const fetchPost = async () => {
       try {
         const res = await fetch(`/api/post/${postId}`);
