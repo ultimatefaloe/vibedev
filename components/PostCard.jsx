@@ -224,7 +224,7 @@ export default function PostCard({ post, onDeleted }) {
 
       {/* ── Card body ── */}
       <Link
-        href={`/post/${post._id}`}
+        href={`/post/get/${post._id}`}
         className="block p-4"
         tabIndex={confirmDelete ? -1 : 0}
         aria-hidden={confirmDelete}
